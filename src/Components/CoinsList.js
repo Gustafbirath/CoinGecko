@@ -4,8 +4,14 @@ import Coin from './Coin';
 
 const CoinsList = (props) => {
     const [coins, setCoins] = useState([]);
+    const [search, setSearch] = useState('');
 
-    function fetchCoinsHandler() {
+    const searchHandler = () => {
+        setCoins(coins.filter((coin) => coin.name.toLowerCase().includes(search.toLowerCase())));
+        console.log(props.searchValue)
+    }
+
+    function fetchCoinsHandler(e) {
         fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=${props.currency}&order=market_cap_desc&per_page=100&page=3`)
             .then((response) => {
                 return response.json();
@@ -22,11 +28,18 @@ const CoinsList = (props) => {
                     };
                 });
                 setCoins(transformedCoins);
+                if (e) {
+                    searchHandler();
+                }
             });
     }
     useEffect(() => {
-        fetchCoinsHandler();
-    }, [props.currency]);
+        fetchCoinsHandler(search);
+    }, [props.currency, search]);
+
+    useEffect(() => {
+        setSearch(props.searchValue)
+    }, [props.searchValue]);
 
     return (
         <div className='coin-list'>

@@ -13,6 +13,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 function App(props) {
   const [toasts, setToasts] = useState([]);
   const [selectedCurrency, setCurrency] = useState('sek');
+  const [search, setSearch] = useState('');
+
   let coins = [];
 
   const watchListHandler = () => {
@@ -44,23 +46,10 @@ function App(props) {
     setCurrency(e);
   };
 
-  // function searchHandler(props) {
-  //   const filteredData = data.filter((el) => {
-  //     if (props.input === '') {
-  //       return el;
-  //     }
-  //     else {
-  //       return el.text.toLowerCase().includes(props.input)
-  //     }
-  //   })
-  //   return (
-  //     <ul>
-  //       {filteredData.map((item) => (
-  //         <li key={item.id}>{item.text}</li>
-  //       ))}
-  //     </ul>
-  //   )
-  // }
+  const searchFunc = (e) => {
+    setSearch(e);
+    console.log(search)
+  }
   return (
     <React.Fragment>
       <PageNavbar />
@@ -69,20 +58,20 @@ function App(props) {
           <Switch>
             <Route exact path='/'>
               <Carousel currency={selectedCurrency} />
-                  <CurrencyChange currency={selectedCurrency} onCurrencyChange={currencyChangeHandler} />
-                  <InputField />
-                  <TopRow />
-                  <WatchList toast={toasts} removeItem={removeStorage} />
-                  <CoinsList currency={selectedCurrency} addCoinToStorage={addStorage} />
-                </Route>
-                <Route path="/CoinData/:name">
-                  <CoinData coinData={props.name} />
-                </Route>
-              </Switch>
-            </Router>
-          </section>
-        </React.Fragment>
-        );
+              <CurrencyChange currency={selectedCurrency} onCurrencyChange={currencyChangeHandler} />
+              <InputField searchFunc={searchFunc} />
+              <TopRow />
+              <WatchList toast={toasts} removeItem={removeStorage} />
+              <CoinsList currency={selectedCurrency} addCoinToStorage={addStorage} searchValue={search} />
+            </Route>
+            <Route path="/CoinData/:name">
+              <CoinData coinData={props.name} />
+            </Route>
+          </Switch>
+        </Router>
+      </section>
+    </React.Fragment>
+  );
 }
 
-        export default App; 
+export default App; 

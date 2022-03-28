@@ -1,7 +1,7 @@
-const InputField = () => {
+const InputField = (props) => {
     return (
         <div className="input-group" >
-            <input type="text" className="form-control" />
+            <input onChange={(e) => props.searchFunc(e.target.value)} type="text" className="form-control" />
         </div>
     );
 };

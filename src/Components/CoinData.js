@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Line } from 'react-chartjs-2';
+import { Chart as ChartJs } from "chart.js/auto";
 
 const CoinData = (props) => {
     const params = useParams();
-    const [historicData, setHistoricData] = useState();
-    const [days, setDays] = useState(365);
+    const [historicData, setHistoricData] = useState([]);
     const [currency, setCurrency] = useState("sek");
     const [coin, setCoin] = useState();
-
+    const [days, setDays] = useState(30);
+    console.log(coin);
 
     async function fetchCoinsHandler() {
         const response = await fetch(`https://api.coingecko.com/api/v3/coins/${params.name}`);
@@ -16,32 +17,72 @@ const CoinData = (props) => {
         setCoin(data);
     }
 
-    async function getHistoricData(){
-        const chartResponse = await fetch(`https://api.coingecko.com/api/v3/coins/${params.name}/market_chart?vs_currency=sek&days=365`);
+    async function getHistoricData() {
+        const chartResponse = await fetch(`https://api.coingecko.com/api/v3/coins/${params.name}/market_chart?vs_currency=${currency}&days=30`);
         const chartData = await chartResponse.json();
-        setHistoricData(chartData);
+        setHistoricData(chartData.prices);
     };
 
     useEffect(() => {
         fetchCoinsHandler()
         getHistoricData()
     }, []);
-
     return (
         <div>
-            {coin ? (
-                <div className="trending mt-5">
-                    <img src={coin.image.large} />
-                    <h1>{coin.name}</h1>
-                    <h2>{coin.symbol}</h2>
-                    <a href={coin.links.homepage[0]}>{coin.links.homepage[0]}</a>
-                    <p> Beskrivning: {coin.description.en}</p>
+            <div>
+                {coin ? (
+                    <div className="trending mt-5">
+                        <div className='group-box'>
+                            <img src={coin.image.small} />
+                            {coin.name}
+                            {coin.symbol}
+                        </div>
+                    </div>
+                ) : (
+                    <div>{params.name}</div>
+                )
+                }
+                <Line data={{
+                    labels: historicData.map((coin) => {
+                        let date = new Date(coin[0]);
+                        let time =
+                            date.getHours() > 12
+                                ? `${date.getHours() - 12}:${date.getMinutes()} PM`
+                                : `${date.getHours()}:${date.getMinutes()} AM`;
+                        return days === 1 ? time : date.toLocaleDateString();
+                    }),
+                    datasets: [
+                        {
+                            data: historicData.map((coin) => coin[1]),
+                            label: `Price ( Past ${days} Days ) in ${currency}`,
+                            borderColor: "#EEBC1D",
+                        },
+                    ],
+                }
+
+                }
+                    options={{
+                        elements: {
+                            point: {
+                                radius: 1,
+                            }
+                        }
+                    }
+                    }
+                />
+                <div>
+                {coin ? (
+                    <div className="trending mt-5">
+                        <a href={coin.links.homepage[0]}>{coin.links.homepage[0]}</a>
+                        <p> Beskrivning: {coin.description.en}</p>
+                    </div>
+                ) : (
+                    <div>{params.name}</div>
+                )
+                }
                 </div>
-            ) : (
-                <div>{params.name}</div>
-            )
-            }
-        </div >
+            </div >
+        </div>
     )
 }
 
