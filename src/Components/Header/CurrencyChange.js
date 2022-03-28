@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
-
-
 const CurrencyChange = (props) => {
     
     return (
         <div className='container mt-5'>
             <div className='button-layout'>
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
                     Valuta
                 </button>
                 <ul className='dropdown-menu' aria-labelledby='dropdownMenu'>

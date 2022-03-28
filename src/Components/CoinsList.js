@@ -16,9 +16,9 @@ const CoinsList = (props) => {
                         id: coinData.id,
                         name: coinData.name,
                         image: coinData.image.replace('large', 'thumb'),
-                        price: coinData.current_price,
-                        cap: coinData.market_cap,
-                        priceChange: coinData.market_cap_change_percentage_24h
+                        price: coinData.current_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                        cap: coinData.market_cap.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","),
+                        priceChange: coinData.market_cap_change_percentage_24h.toFixed(2)
                     };
                 });
                 setCoins(transformedCoins);
@@ -32,6 +32,7 @@ const CoinsList = (props) => {
         <div className='coin-list'>
             {coins.map((coin) => (
                 <Coin className='single-coin'
+                    id={coin.id}
                     key={coin.id}
                     image={coin.image}
                     name={coin.name}
@@ -39,6 +40,7 @@ const CoinsList = (props) => {
                     priceChange={coin.priceChange}
                     cap={coin.cap}
                     setCurrency={props.currency}
+                    addCoinToStorage={props.addCoinToStorage}
                 />
             ))}
         </div>
