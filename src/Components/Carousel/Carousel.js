@@ -17,7 +17,7 @@ const Carousel = (props) => {
           return {
             name: coinData.name,
             symbol: coinData.symbol,
-            image: coinData.image,
+            image: coinData.image.replace('large', 'small'),
             price: coinData.current_price,
             cap: coinData.market_cap,
             priceChange: coinData.market_cap_change_percentage_24h,
@@ -25,6 +25,7 @@ const Carousel = (props) => {
           };
         });
         setCoins(transformedCoins);
+        console.log(transformedCoins);
       });
   }
   useEffect(() => {
@@ -35,10 +36,10 @@ const Carousel = (props) => {
     let change = coin.priceChange >= 0;
     let redOrGreen = { color: change > 0 ? "rgb(14, 203, 129)" : "red" }
     return (
-      <div className="trending mt-5">
+      <div className="trending mt-5 p-5" style={{backgroundColor: "#f8edeb"}}>
         <img src={coin.image} />
         <h1>{coin.name}</h1>
-        <h2>{coin.symbol}</h2>
+        <h2 style={{opacity: 0.5}}>{coin.symbol}</h2>
         <p>{coin.price.toString()} {coin.setCurrency.toUpperCase()}</p>
         <p style={redOrGreen}>{change && '+'} {coin?.priceChange.toFixed(2)}%</p>
       </div>

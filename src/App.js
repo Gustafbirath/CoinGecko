@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, ToastContainer } from 'react-bootstrap';
+import PageNavbar from './Components/Header/PageNavbar';
 import Carousel from './Components/Carousel/Carousel';
-import CoinsList from './Components/CoinsList';
+import CoinsList from './Components/Coins/CoinsList';
 import CurrencyChange from './Components/Header/CurrencyChange';
-import TopRow from './Components/TopRow';
-import WatchList from './Components/WatchList';
-import PageNavbar from './Components/PageNavbar';
-import CoinData from './Components/CoinData';
-import InputField from './Components/InputField';
+import TopRow from './Components/Header/TopRow';
+import WatchList from './Components/Toasts/WatchList';
+import CoinData from './Components/Coins/CoinData';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App(props) {
@@ -48,7 +46,6 @@ function App(props) {
 
   const searchFunc = (e) => {
     setSearch(e);
-    console.log(search)
   }
   return (
     <React.Fragment>
@@ -58,11 +55,10 @@ function App(props) {
           <Switch>
             <Route exact path='/'>
               <Carousel currency={selectedCurrency} />
-              <CurrencyChange currency={selectedCurrency} onCurrencyChange={currencyChangeHandler} />
-              <InputField searchFunc={searchFunc} />
+              <CurrencyChange currency={selectedCurrency} onCurrencyChange={currencyChangeHandler} searchFunc={searchFunc} />
               <TopRow />
-              <WatchList toast={toasts} removeItem={removeStorage} />
               <CoinsList currency={selectedCurrency} addCoinToStorage={addStorage} searchValue={search} />
+              <WatchList toast={toasts} removeItem={removeStorage} currency={selectedCurrency}/>
             </Route>
             <Route path="/CoinData/:name">
               <CoinData coinData={props.name} />

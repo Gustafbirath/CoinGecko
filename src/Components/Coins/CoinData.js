@@ -9,7 +9,6 @@ const CoinData = (props) => {
     const [currency, setCurrency] = useState("sek");
     const [coin, setCoin] = useState();
     const [days, setDays] = useState(30);
-    console.log(coin);
 
     async function fetchCoinsHandler() {
         const response = await fetch(`https://api.coingecko.com/api/v3/coins/${params.name}`);
@@ -27,59 +26,59 @@ const CoinData = (props) => {
         fetchCoinsHandler()
         getHistoricData()
     }, []);
+    
     return (
         <div>
-            <div>
+            <div className="container mt-5">
                 {coin ? (
                     <div className="trending mt-5">
                         <div className='group-box'>
                             <img src={coin.image.small} />
                             {coin.name}
-                            {coin.symbol}
                         </div>
                     </div>
                 ) : (
                     <div>{params.name}</div>
                 )
                 }
-                <Line data={{
-                    labels: historicData.map((coin) => {
-                        let date = new Date(coin[0]);
-                        let time =
-                            date.getHours() > 12
-                                ? `${date.getHours() - 12}:${date.getMinutes()} PM`
-                                : `${date.getHours()}:${date.getMinutes()} AM`;
-                        return days === 1 ? time : date.toLocaleDateString();
-                    }),
-                    datasets: [
-                        {
-                            data: historicData.map((coin) => coin[1]),
-                            label: `Price ( Past ${days} Days ) in ${currency}`,
-                            borderColor: "#EEBC1D",
-                        },
-                    ],
-                }
+                <div className="container mt-5">
+                    <Line data={{
+                        labels: historicData.map((coin) => {
+                            let date = new Date(coin[0]);
+                            let time = date.getHours() > 12
+                            return days === 1 ? time : date.toLocaleDateString();
+                        }),
+                        datasets: [
+                            {
+                                data: historicData.map((coin) => coin[1]),
+                                label: `Pris ( Senaste ${days} dagar ) i ${currency.toUpperCase()}`,
+                                borderColor: "#EEBC1D",
+                            },
+                        ],
+                    }
 
-                }
-                    options={{
-                        elements: {
-                            point: {
-                                radius: 1,
+                    }
+                        options={{
+                            elements: {
+                                point: {
+                                    radius: 1,
+                                }
                             }
                         }
-                    }
-                    }
-                />
-                <div>
-                {coin ? (
-                    <div className="trending mt-5">
-                        <a href={coin.links.homepage[0]}>{coin.links.homepage[0]}</a>
-                        <p> Beskrivning: {coin.description.en}</p>
+                        }
+                    />
+                    <div>
                     </div>
-                ) : (
-                    <div>{params.name}</div>
-                )
-                }
+                    {coin ? (
+                        <div className="container p-5">
+                            <h6 className="lead">Om: </h6>
+                            <p className="text-capitalize">{coin.description.en}</p>
+                            <a href={coin.links.homepage[0]}>{coin.links.homepage[0]}</a>
+                        </div>
+                    ) : (
+                        <div>{params.name}</div>
+                    )
+                    }
                 </div>
             </div >
         </div>

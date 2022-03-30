@@ -10,7 +10,7 @@ const WatchList = (props) => {
                         <img src={coin.image} className="rounded me-2" alt="" />
                         <strong className="me-auto">{coin.name}</strong>
                     </Toast.Header>
-                    <Toast.Body>Price: {coin.price}</Toast.Body>
+                    <Toast.Body>Senaste pris: {coin.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Toast.Body>
                 </Toast>
             )) : <div></div>}
         </ToastContainer>

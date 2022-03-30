@@ -5,11 +5,11 @@
     cursor: pointer;
     text-transform: uppercase;
     color: black;
-    
 
 }
 
 .carousel {
     display: flex;
     align-items: center;
+    background-color: #f8edeb;
 }
