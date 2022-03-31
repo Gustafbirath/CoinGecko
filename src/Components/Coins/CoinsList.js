@@ -8,7 +8,6 @@ const CoinsList = (props) => {
 
     const searchHandler = () => {
         setCoins(coins.filter((coin) => coin.name.toLowerCase().includes(search.toLowerCase())));
-        console.log(props.searchValue)
     }
 
     function fetchCoinsHandler(e) {

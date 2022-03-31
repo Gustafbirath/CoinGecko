@@ -58,7 +58,7 @@ function App(props) {
               <CurrencyChange currency={selectedCurrency} onCurrencyChange={currencyChangeHandler} searchFunc={searchFunc} />
               <TopRow />
               <CoinsList currency={selectedCurrency} addCoinToStorage={addStorage} searchValue={search} />
-              <WatchList toast={toasts} removeItem={removeStorage} currency={selectedCurrency}/>
+              <WatchList toast={toasts} removeItem={removeStorage} currency={selectedCurrency} />
             </Route>
             <Route path="/CoinData/:name">
               <CoinData coinData={props.name} />
